@@ -25,6 +25,22 @@ print(len(delays_new2))
 airports_in_TN = delays_new[(delays_new.airport_name.str.contains('TN:', na=False))]
 
 ###
-coord = pd.read_csv('https://raw.githubusercontent.com/nickdcox/learn-airline-delays/main/airport_coordinates.csv')
+airport_coordinates = pd.read_csv('https://raw.githubusercontent.com/nickdcox/learn-airline-delays/main/airport_coordinates.csv')
 
-airports = pd.DataFrame('airport': delays['airport'].unique(), 'airport_name': delays['airport_name'].unique())
+# remove duplicates
+airports = delays[['airport','airport_name']].drop_duplicates().reset_index(drop=True)
+print(airports)
+
+# merge  is similar to joining tables in SQL
+airports = airports.merge(airport_coordinates, on='airport')
+
+# airports = airports.merge(airport_coordinates, left_on='airport', right_on='airport')
+print(airports)
+
+# B_airports = airports[airports.airport.str.contains('^B.*$', regex=True, na=False)]
+
+B_airports = airports[airports.airport.str.startswith('B',na=False)]
+print(B_airports)
+
+print(B_airports)
+
