@@ -44,3 +44,6 @@ print(B_airports)
 
 print(B_airports)
 
+# %%
+# Exercise 2
+
