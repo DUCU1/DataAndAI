@@ -55,9 +55,6 @@ def central(cacat):
     return pd.DataFrame({'Mode':mode,'Median':med,'Mean':mean.round(2),'G-mean':geo.round(2),'H-mean': harm.round(2)})
 
 
-data = pd.Series ([1,2,2,2,2,3,3,4,7,8,8,8,9,9,9])
-display(central(data))
-
 
 ## Get outliers funtion
 def get_outliers(data):
