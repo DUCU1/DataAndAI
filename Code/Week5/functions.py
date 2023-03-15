@@ -1,4 +1,7 @@
 import pandas as pd
+from IPython.core.display_functions import display
+from pandas.core import series
+
 
 # Nu merge pe tabele care au frequences
 def all_freq(x):
@@ -16,10 +19,52 @@ df = pd.DataFrame({'freq': freq }, columns = ['freq'], index=x)
 # <---- Here ---->
 cum_perc = df.cumsum()/df.sum()*100
 
-## Media pentru categorical data ( Procesor name de exmeplu )
+## Median pentru categorical data ( Procesor name de exmeplu )
 import math as m
 def median_categorical(data):
     d = data.dropna()
     n = len(d)
     middle = m.floor(n/2)
     return d.sort_values().reset_index(drop=True)[middle]
+
+
+# Weighted mean
+def weighted_mean(credits, score):
+    return sum(credits*score)/sum(credits)
+
+# Geometric mean
+def geo_mean(delta):
+    import numpy as np
+    return np.exp(np.mean(np.log(delta)))
+
+# Harmonic mean
+def harmonic_mean(data):
+    from scipy import stats
+    return stats.hmean(data)
+
+
+
+## Functie care face toate mediile
+def central(cacat):
+    data = cacat.dropna()
+    mode = data.mode()
+    med = data.median()
+    mean = data.mean()
+    geo = geo_mean(data)
+    harm = harmonic_mean(data)
+    return pd.DataFrame({'Mode':mode,'Median':med,'Mean':mean.round(2),'G-mean':geo.round(2),'H-mean': harm.round(2)})
+
+
+data = pd.Series ([1,2,2,2,2,3,3,4,7,8,8,8,9,9,9])
+display(central(data))
+
+
+## Get outliers funtion
+def get_outliers(data):
+    Q1 = data.quantile(0.25)
+    Q3 = data.quantile(0.75)
+    I = Q3 - Q1
+    low = Q1 - 1.5 * I
+    high = Q3 + 1.5 * I
+    return [data][~data.between(low, high)]
+
