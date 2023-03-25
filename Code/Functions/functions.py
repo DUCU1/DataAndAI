@@ -84,3 +84,13 @@ def get_outliers(data):
     low = Q1 - 1.5 * I
     high = Q3 + 1.5 * I
     return [data[~data.between(low, high)]]
+
+## Cate clase ne trebe
+data = [1,2,3]
+import math
+import statistics as stat
+n=len(data)
+math.ceil(1+math.log2(n)) # Sturges
+b=3.5*stat.stdev(data)/(n**(1/3))
+math.ceil((data.max()-data.min())/b) # Scott
+math.ceil(math.sqrt(n))
