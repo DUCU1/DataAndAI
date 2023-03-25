@@ -1,5 +1,24 @@
 import pandas as pd
 
+# Missing values for NAs
+missing_values = ['n/a', 'na', 'nan', 'N/A', 'NA', 'NaN', 'NAN', '--', 'Missing']
+
+
+def nb_of_fields (name_csv_file, delim):
+    import csv
+    fields=[]
+    with open(name_csv_file, newline='') as csvfile:
+        data = csv.reader(csvfile, delimiter=delim)
+        fields = next(data)
+        min_counter = len(fields)
+    max_counter = min_counter
+    for row in data:
+        nb_fields = len (row)
+        if nb_fields > max_counter:
+            max_counter = nb_fields
+        elif nb_fields < min_counter: min_counter = nb_fields
+    return([min_counter, max_counter])
+
 
 # Nu merge pe tabele care au frequences
 def all_freq(x):
