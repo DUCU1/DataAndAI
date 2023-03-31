@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import math
 import statistics as stat
 
@@ -80,7 +81,7 @@ def central(cacat):
 
 
 ## Remove outliers funtion
-def remove_outliers(data):
+def remove_outliers_2(data):
     Q1 = data.quantile(0.25)
     Q3 = data.quantile(0.75)
     I = Q3 - Q1
@@ -88,12 +89,45 @@ def remove_outliers(data):
     high = Q3 + 1.5 * I
     return [data[~data.between(low, high)]]
 
+def remove_outliers(series):
+    q1 = series.quantile(0.25)
+    q3 = series.quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    print (lower_bound)
+    print (upper_bound)
+    upper_array =[]
+    lower_array =[]
+    for value in series:
+        if value > upper_bound:
+            upper_array.append(value)
+        if value < lower_bound:
+            lower_array.append(value)
+
+    print(upper_array)
+    print(lower_array)
+    cleaned_series = series.drop(upper_array[0], inplace=True)
+    cleaned_series = series.drop(lower_array[0], inplace=True)
+    return cleaned_series.dropna()
+
+
 ## Get Outliers
 def outlier_boundaries(x):
     Q1 = x.quantile(0.25)
     Q3 = x.quantile(0.75)
     I = Q3 - Q1
     return [Q1-1.5*I, Q3+1.5*I]
+
+
+def get_extreme_outliers(data):
+    Q1 = data.quantile(0.25)
+    Q3 = data.quantile(0.75)
+    I = Q3 - Q1
+    low = Q1 - 3 * I
+    high = Q3 + 3 * I
+    outliers = data[(data < low) | (data > high)]
+    return outliers
 
 ## Cate clase ne trebe
 #data = [1,2,3]
@@ -126,3 +160,61 @@ def dispersion(series):
         print('%5.2f' % d_range + ' ' + '%5.2f' % d_IQR + ' '+'%5.2f' % d_mad + ' ' + '%5.2f' % d_var + ' ' + '%5.2f' % d_std)
     else:
         print('Range = ' + s.min() + ' ' + s.max())
+
+
+#Pie Chart
+def pie_chart(values, label, title):
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.pie(values, labels=label)
+    plt.title(title)
+    plt.show()
+
+def bar_chart(value, label, title, xlabel, ylabel):
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.bar(label, value)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.show()
+
+
+#Function that makes a series from a freq table
+def make_series_from_freq_tb(arr1, arr2):
+    import numpy as np
+    import pandas as pd
+    def repeat_array(array):
+        return np.repeat(array[:, 0],array[:, 1])
+
+    matrix = np.column_stack((arr1, arr2))
+    result = repeat_array(matrix)
+
+    return pd.Series(result)
+
+def spider_graph(column):
+    import matplotlib.pyplot as plt
+    import math
+
+    x=column
+    t=x.value_counts()
+    categories= t.index
+    values= t.values.tolist()
+    values +=values[:1] #add end point equal to start point
+    n= len (t)
+    m =max(values)
+    angles =[k/float(n)*2* math.pi for k in range(n)]
+    angles+= angles[: 1]
+
+    plt. figure()
+    ax=plt.subplot( 111,polar=True)
+    plt.xticks(angles[:-1],categories, color ='grey', size=8)
+    ax.set_rlabel_position (0)
+    plt.yticks([ k/4*m for k in range(4)],[ k/4*m for k in range(4)],color='grey',size=7)
+    plt.ylim (0,m)
+    plt.plot ( angles,values, linewidth=1,linestyle='solid')
+
+    plt.fill ( angles,values ,'b',alpha=0.1)
+    plt.show()
+    return
+
