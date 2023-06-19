@@ -1,0 +1,10 @@
+name,hair length,weight,age,gender
+Homer,<3,>160,30-40,M
+Marge,>5,<=160,30-40,F
+Bart,<3,<=160,<30,M
+Lisa,>5,<=160,<30,F
+Maggie,3-5,<=160,<30,F
+Abe,<3,>160,>40,M
+Selma,>5,<=160,>40,F
+Otto,>5,>160,30-40,M
+Krusty,>5,>160,>40,M

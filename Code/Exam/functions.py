@@ -4,7 +4,7 @@ import math
 import statistics as stat
 
 # Missing values for NAs
-missing_values = ['n/a', 'na', 'nan', 'N/A', 'NA', 'NaN', 'NAN', '--', 'Missing']
+missing_values = ['n/a', 'na', 'nan', 'N/A', 'NA', 'NaN', 'NAN', '--', 'Missing', 'UNKNOWN']
 
 
 def nb_of_fields(name_csv_file, delim):
